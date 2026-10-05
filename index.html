@@ -55,8 +55,8 @@
 
         <div id="success-state" class="hidden success-layer py-8 text-center" role="status" aria-live="polite">
           <span class="material-symbols-outlined text-4xl" aria-hidden="true">verified</span>
-          <h2 class="mt-6 text-3xl font-semibold tracking-tight">Access Granted</h2>
-          <p class="mt-3 text-sm leading-6 text-neutral-400">Your request has been received. Watch your inbox for the next step.</p>
+          <h2 class="mt-6 text-3xl font-semibold tracking-tight">Finish!</h2>
+          <p class="mt-3 text-sm leading-6 text-neutral-400">Your request has been received. Keep posted your inbox for the next step.</p>
         </div>
       </section>
     </main>
@@ -67,7 +67,7 @@
   </div>
 
   <script>
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/REPLACE_WITH_DEPLOYMENT_ID/exec';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzYF5oAJmk2cWpFqoSJcl4bW5aMhdIBJY5Ka6qT1B4J281TkmTi-1V1kXpSlWIDi9Dj/exec';
     const form = document.getElementById('waitlist-form');
     const email = document.getElementById('email');
     const submitButton = document.getElementById('submit-button');
@@ -84,10 +84,12 @@
         return;
       }
       submitButton.disabled = true;
-      buttonLabel.textContent = 'Processing Array...';
+      buttonLabel.textContent = 'Processing...';
       try {
         const endpoint = new URL(GOOGLE_SCRIPT_URL);
         endpoint.searchParams.set('email', email.value.trim());
+        endpoint.searchParams.set('source', 'orbis-waitlist');
+        endpoint.searchParams.set('Timestamp', new Date().toISOString());
         await fetch(endpoint.toString(), { method: 'POST', mode: 'no-cors' });
         formContainer.classList.add('hidden');
         successState.classList.remove('hidden');
